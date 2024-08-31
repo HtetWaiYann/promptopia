@@ -16,7 +16,8 @@ import Logo from "@public/assets/images/logo.svg";
 import { BuiltInProviderType } from "next-auth/providers/index";
 
 const Nav = () => {
-  const isUserLoggedIn = true;
+  const { data: session } = useSession();
+
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   const [providers, setProviders] = useState<Record<
@@ -42,10 +43,10 @@ const Nav = () => {
 
       {/* Desktop Navigation */}
       <div className="sm:flex hidden">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex gap-3 md:gap-5">
-            <Link href="/create-post" className="black_btn">
-              Create Post
+            <Link href="/create-prompt" className="black_btn">
+              Create Prompt
             </Link>
             <button
               type="button"
@@ -56,7 +57,7 @@ const Nav = () => {
             </button>
             <Link href="/profile">
               <Image
-                src={Logo}
+                src={session?.user?.image ?? ""}
                 alt="Profile"
                 width={30}
                 height={30}
@@ -83,10 +84,10 @@ const Nav = () => {
 
       {/* Mobile Navigation */}
       <div className="sm:hidden flex">
-        {isUserLoggedIn ? (
+        {session?.user ? (
           <div className="flex relative">
             <Image
-              src={Logo}
+              src={session?.user?.image ?? ""}
               alt="Profile"
               width={30}
               height={30}
@@ -104,7 +105,7 @@ const Nav = () => {
                   My Profile
                 </Link>
                 <Link
-                  href="/create-post"
+                  href="/create-prompt"
                   className="dropdown_link"
                   onClick={() => setToggleDropdown(false)}
                 >
