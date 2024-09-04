@@ -1,6 +1,8 @@
 export interface Post {
     prompt: string;
     tag: string;
+    creator?: string;
+    _id?: string;
 }
 
 export interface FormProps {
@@ -9,4 +11,9 @@ export interface FormProps {
     post: Post;
     setPost: (post: Post) => void;
     handleSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+}
+
+export interface PromptCardListProps {
+    data: Post[];
+    handleTagClick: (tag: string) => void;
 }

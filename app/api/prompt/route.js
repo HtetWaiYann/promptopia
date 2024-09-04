@@ -1,5 +1,5 @@
 import { connectDB } from "@utils/database";
-import Prompt from "@models/Prompt";
+import Prompt from "@models/prompt";
 
 export const POST = async (req, res) => {
   const { userId, prompt, tag } = await req.json();
@@ -15,6 +15,16 @@ export const POST = async (req, res) => {
     await newPrompt.save();
 
     return new Response(JSON.stringify(newPrompt), { status: 201 });
+  } catch (e) {
+    return new Response(e.message, { status: 500 });
+  }
+};
+
+export const GET = async (req, res) => {
+  try {
+    await connectDB();
+    const prompts = await Prompt.find();
+    return new Response(JSON.stringify(prompts), { status: 201 });
   } catch (e) {
     return new Response(e.message, { status: 500 });
   }
