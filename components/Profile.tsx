@@ -1,11 +1,14 @@
-import React from 'react'
+import { ProfileProps } from "@types";
+import React from "react";
 
-const Profile = () => {
-  return (
-    <div>
-      
-    </div>
-  )
-}
+const Profile = ({
+  name,
+  desc,
+  data,
+  handleEdit,
+  handleDelete,
+}: ProfileProps) => {
+  return <div> Profile </div>;
+};
 
-export default Profile
+export default Profile;
