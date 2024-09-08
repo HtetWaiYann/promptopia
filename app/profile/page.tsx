@@ -10,6 +10,7 @@ import { Post } from "@types";
 const ProfilePage = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const { data: session } = useSession();
+  const router = useRouter();
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -23,8 +24,24 @@ const ProfilePage = () => {
     }
   }, []);
 
-  const handleEdit = (id: string) => {};
-  const handleDelete = (id: string) => {};
+  const handleEdit = (post: Post) => {
+    router.push(`/update-prompt?id=${post._id}`);
+  };
+  
+  const handleDelete = (post: Post) => {
+    const hasConfirmed = confirm("Are you sure you want to delete this post?");
+    if (hasConfirmed) {
+      try {
+        fetch(`/api/prompt/${post._id}`, {
+          method: "DELETE",
+        }).then(() => {
+          setPosts((prevPosts) => prevPosts.filter((p) => p._id !== post._id));
+        });
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  };
 
   return (
     <Profile

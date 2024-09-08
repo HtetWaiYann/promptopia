@@ -20,6 +20,7 @@ const PromptCard = ({
 
   const pathName = usePathname();
   const { data: session } = useSession();
+  const router = useRouter();
 
   const handleCopy = (prompt: string) => {
     navigator.clipboard.writeText(prompt);
@@ -28,25 +29,36 @@ const PromptCard = ({
     setTimeout(() => setCopiedPrompt(""), 2000);
   };
 
+  const handleProfileClick = () => {
+    if (post.creator?._id === session?.user?.id) {
+      router.push("/profile");
+    } else {
+      router.push(`/profile/${post.creator?._id}`);
+    }
+  };
+
   return (
     <div className="prompt_card">
       <div className="flex justify-between items-start gap-5">
-        <div>
-          <Image
-            src={post.creator?.image ?? defaultUserImage}
-            width={40}
-            height={40}
-            className="rounded-full object-contain"
-            alt={post.creator?.username ?? "User Profile Image"}
-          />
-        </div>
-        <div className="flex flex-col">
-          <h3 className="font-satoshi font-semibold text-gray-900">
-            {post.creator?.username}
-          </h3>
-          <p className="font-inter text-sm text-gray-500">
-            {post.creator?.email}
-          </p>
+        <div className="flex gap-3">
+          <div>
+            <Image
+              onClick={handleProfileClick}
+              src={post.creator?.image ?? defaultUserImage}
+              width={40}
+              height={40}
+              className="rounded-full object-contain cursor-pointer"
+              alt={post.creator?.username ?? "User Profile Image"}
+            />
+          </div>
+          <div className="flex flex-col cursor-pointer" onClick={handleProfileClick}>
+            <h3 className="font-satoshi font-semibold text-gray-900">
+              {post.creator?.username}
+            </h3>
+            <p className="font-inter text-sm text-gray-500">
+              {post.creator?.email}
+            </p>
+          </div>
         </div>
         <div className="copy_btn" onClick={() => handleCopy(post.prompt)}>
           {copiedPrompt === post.prompt ? (
@@ -74,7 +86,7 @@ const PromptCard = ({
           </p>
           <p
             className="font-inter text-sm orange_gradient cursor-pointer"
-            onClick={() => handleEdit(post)}
+            onClick={() => handleDelete(post)}
           >
             Delete
           </p>
