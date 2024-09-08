@@ -16,15 +16,17 @@ const PromptCard = ({
   handleEdit,
   handleDelete,
 }: PromptCardProps) => {
-
   const [copiedPrompt, setCopiedPrompt] = useState<string>("");
+
+  const pathName = usePathname();
+  const { data: session } = useSession();
 
   const handleCopy = (prompt: string) => {
     navigator.clipboard.writeText(prompt);
     setCopiedPrompt(prompt);
 
     setTimeout(() => setCopiedPrompt(""), 2000);
-  }
+  };
 
   return (
     <div className="prompt_card">
@@ -47,19 +49,37 @@ const PromptCard = ({
           </p>
         </div>
         <div className="copy_btn" onClick={() => handleCopy(post.prompt)}>
-            {copiedPrompt === post.prompt ? (
-              <Image src={tickIcon} width={20} height={20} alt="Copied" />
-            ) : (
-              <Image src={copyIcon} width={20} height={20} alt="Copy" />
-            )}
-          </div>
+          {copiedPrompt === post.prompt ? (
+            <Image src={tickIcon} width={20} height={20} alt="Copied" />
+          ) : (
+            <Image src={copyIcon} width={20} height={20} alt="Copy" />
+          )}
+        </div>
       </div>
-      <p className="my-4 font-satoshi text-sm text-gray-700">
-        {post.prompt}
-      </p>
-      <p className="font-inter text-sm blue_gradient cursor-pointer" onClick={() => handleTagClick && handleTagClick(post.tag)}>
+      <p className="my-4 font-satoshi text-sm text-gray-700">{post.prompt}</p>
+      <p
+        className="font-inter text-sm blue_gradient cursor-pointer"
+        onClick={() => handleTagClick && handleTagClick(post.tag)}
+      >
         {post.tag}
       </p>
+
+      {session?.user?.id === post.creator?._id && pathName === "/profile" && (
+        <div className="mt-5 flex-center gap-4 border-t border-gray-100 pt-3">
+          <p
+            className="font-inter text-sm green_gradient cursor-pointer"
+            onClick={() => handleEdit(post)}
+          >
+            Edit
+          </p>
+          <p
+            className="font-inter text-sm orange_gradient cursor-pointer"
+            onClick={() => handleEdit(post)}
+          >
+            Delete
+          </p>
+        </div>
+      )}
     </div>
   );
 };

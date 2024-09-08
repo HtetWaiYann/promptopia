@@ -1,7 +1,7 @@
 import { connectDB } from "@utils/database";
 import Prompt from "@models/prompt";
 
-export const POST = async (req : Request, res: Response) => {
+export const POST = async (req : Request) => {
   const { userId, prompt, tag } = await req.json();
 
   try {
@@ -20,7 +20,7 @@ export const POST = async (req : Request, res: Response) => {
   }
 };
 
-export const GET = async (req : Request, res : Response) => {
+export const GET = async () => {
   try {
     await connectDB();
     const prompts = await Prompt.find({}).populate("creator");

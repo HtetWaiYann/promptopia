@@ -28,14 +28,14 @@ export interface PromptCardListProps {
 export interface PromptCardProps {
     post: Post;
     handleTagClick: (tag: string) => void;
-    handleEdit: (id: string) => void;
-    handleDelete: (id: string) => void;
+    handleEdit: (post: Post) => void;
+    handleDelete: (post: Post) => void;
 }
 
 export interface ProfileProps {
     name: string;
     desc: string;
     data: Post[];
-    handleEdit: (id: string) => void;
-    handleDelete: (id: string) => void;
+    handleEdit: (post: Post) => void;
+    handleDelete: (post: Post) => void;
 }
