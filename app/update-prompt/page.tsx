@@ -1,7 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
+import { Suspense, useEffect, useState } from "react";
 
 import Form from "@components/Form";
 import type { Post } from "@types";
@@ -10,7 +9,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 
 const UpdatePrompt = () => {
   const router = useRouter();
-  const { data: session } = useSession();
   const [submitting, setSubmitting] = useState(false);
   const [post, setPost] = useState<Post>({
     prompt: "",
@@ -75,4 +73,10 @@ const UpdatePrompt = () => {
   );
 };
 
-export default UpdatePrompt;
+export default function UpdatePromptWrapper() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <UpdatePrompt />
+    </Suspense>
+  );
+}
